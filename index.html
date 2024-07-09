@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>  
+<html lang="zh">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>私人笔记本</title>  
+<style>  
+  body {  
+    font-family: 'Roboto', sans-serif;  
+    margin: 0;  
+    padding: 20px;  
+    display: flex;  
+    flex-direction: column;  
+    align-items: center;  
+    height: 100vh;  
+    background-color: #f5f5f5;  
+  }  
+  
+  .note-container {  
+    width: 100%;  
+    max-width: 600px;  
+    margin-bottom: 20px;  
+    background-color: #fff;  
+    border-radius: 8px;  
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);  
+    overflow: hidden;  
+  }  
+  
+  .note-header {  
+    padding: 16px;  
+    display: flex;  
+    justify-content: space-between;  
+    align-items: center;  
+    background-color: #eee;  
+    border-bottom: 1px solid #ddd;  
+  }  
+  
+  .note-title {  
+    font-size: 18px;  
+    margin: 0;  
+  }  
+  
+  .note-list {  
+    list-style: none;  
+    padding: 0;  
+    margin: 0;  
+  }  
+  
+  .note-item {  
+    padding: 16px;  
+    border-bottom: 1px solid #eee;  
+    position: relative;  
+    cursor: pointer;  
+  }  
+  
+  .note-item:hover {  
+    background-color: #f9f9f9;  
+  }  
+  
+  .delete-btn {  
+    position: absolute;  
+    right: 16px;  
+    top: 50%;  
+    transform: translateY(-50%);  
+    border: none;  
+    background: none;  
+    color: #dd0031;  
+    font-weight: bold;  
+    cursor: pointer;  
+  }  
+  
+  .add-note-form {  
+    display: flex;  
+    flex-direction: column;  
+  }  
+  
+  .add-note-input {  
+    padding: 10px;  
+    margin-bottom: 10px;  
+    border: 1px solid #ccc;  
+    border-radius: 4px;  
+    font-size: 16px;  
+  }  
+  
+  .add-note-btn {  
+    padding: 10px 20px;  
+    background-color: #007bff;  
+    color: white;  
+    border: none;  
+    border-radius: 4px;  
+    cursor: pointer;  
+    font-size: 16px;  
+  }  
+  
+  .add-note-btn:hover {  
+    background-color: #0056b3;  
+  }  
+</style>  
+</head>  
+<body>  
+  
+<div class="note-container">  
+  <div class="note-header">  
+    <h2 class="note-title">笔记列表</h2>  
+    <!-- Placeholder for adding actual header actions -->  
+  </div>  
+  <ul class="note-list" id="noteList"></ul>  
+</div>  
+  
+<div class="add-note-form">  
+  <textarea class="add-note-input" id="noteContent" placeholder="输入笔记正文..."></textarea>  
+  <button class="add-note-btn" onclick="addNote()">创建笔记</button>  
+</div>  
+  
+<script>  
+  let notes = JSON.parse(localStorage.getItem('notes')) || [];  
+  
+  function renderNotes() {  
+    const noteList = document.getElementById('noteList');  
+    noteList.innerHTML = ''; // Clear existing notes  
+  
+    notes.forEach(note => {
+const noteItem = document.createElement('li');  
+      noteItem.classList.add('note-item');  
+      noteItem.textContent = note;  
+  
+      // Add delete button  
+      const deleteBtn = document.createElement('button');  
+      deleteBtn.classList.add('delete-btn');  
+      deleteBtn.textContent = '删除笔记';  
+      deleteBtn.onclick = function() {  
+        removeNote(note);  
+        renderNotes(); // Re-render notes after deletion  
+      };  
+  
+      noteItem.appendChild(deleteBtn);  
+      noteList.appendChild(noteItem);  
+    });  
+  }  
+  
+  function addNote() {  
+    const noteContent = document.getElementById('noteContent').value.trim();  
+    if (noteContent) {  
+      notes.push(noteContent);  
+      localStorage.setItem('notes', JSON.stringify(notes));  
+      renderNotes(); // Re-render notes after addition  
+      document.getElementById('noteContent').value = ''; // Clear input  
+    }  
+  }  
+  
+  function removeNote(noteToRemove) {  
+    notes = notes.filter(note => note !== noteToRemove);  
+    localStorage.setItem('notes', JSON.stringify(notes));  
+  }  
+  
+  // Initial render  
+  renderNotes();  
+</script>  
+
+  <div class="footer">  
+<p>获取：<a href="https://211611411.github.io" target="_blank" style="color:black;">轩哥软件合集</a></p>
+  
+  </div>  
+</div>  
+  
+</body>  
+</html>
